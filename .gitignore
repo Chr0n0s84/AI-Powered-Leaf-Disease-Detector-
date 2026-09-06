@@ -1,0 +1,15 @@
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Local datasets and generated model artifacts can be large.
+dataset/
+models/*.keras
+models/*.h5
+
+# Local tooling and logs.
+.pytest_cache/
+.mypy_cache/
+*.log

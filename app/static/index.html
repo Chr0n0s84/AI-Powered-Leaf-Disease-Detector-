@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leaf Disease Detector</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 680px; margin: 3rem auto; padding: 0 1rem; color: #173b2b; }
+      form { border: 2px dashed #75a889; border-radius: 12px; padding: 2rem; text-align: center; }
+      button { background: #216e45; color: white; border: 0; border-radius: 8px; padding: .7rem 1.2rem; cursor: pointer; }
+      #result { margin-top: 1.5rem; padding: 1rem; background: #eef8f0; border-radius: 8px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Leaf Disease Detector</h1>
+    <p>Upload a clear leaf image to receive a CNN-based diagnosis.</p>
+    <form id="form">
+      <input id="file" type="file" accept="image/*" required />
+      <button type="submit">Analyze leaf</button>
+    </form>
+    <div id="result" hidden></div>
+    <script>
+      const form = document.querySelector("#form");
+      const result = document.querySelector("#result");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        result.hidden = false;
+        result.textContent = "Analyzing...";
+        const data = new FormData();
+        data.append("file", document.querySelector("#file").files[0]);
+        try {
+          const response = await fetch("/predict", { method: "POST", body: data });
+          const body = await response.json();
+          if (!response.ok) throw new Error(body.detail || "Prediction failed.");
+          result.textContent = `Diagnosis: ${body.label}\nConfidence: ${(body.confidence * 100).toFixed(1)}%`;
+        } catch (error) {
+          result.textContent = `Error: ${error.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>
