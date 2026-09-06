@@ -145,3 +145,4 @@ in the training model using MobileNetV2 preprocessing. Keep the class order in
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+# AI-Powered-Leaf-Disease-Detector-
